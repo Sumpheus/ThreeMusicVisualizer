@@ -79,7 +79,12 @@ analyser.getByteFrequencyData(dataArray);
   // Use the average frequency to scale the cylinder
   const averageFrequency = dataArray.reduce((sum, value) => sum + value, 0) / dataArray.length;
   const scale = averageFrequency / 128; // Normalize the scale value
+  const rotationSpeed = averageFrequency / 128; // Speed of rotation
+  cylinder.rotation.y += rotationSpeed * 0.05; // Rotate based on frequency
+  cylinder.rotation.x += rotationSpeed * 0.05; // Rotate based on frequency
   cylinder.scale.set(1, scale, 1); // Change height based on frequency
+  cube.scale.set(1, scale, 1); // Change height based on frequency
+  sphere.scale.set(1, scale, 1); // Change height based on frequency
 
   // render  
   renderer.render( scene, camera );
