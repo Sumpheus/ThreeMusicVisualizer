@@ -5,3 +5,8 @@ body{
 #player{
     position: absolute;
 }
+
+.btn{
+    position: absolute;
+    margin-top:5em;
+}
