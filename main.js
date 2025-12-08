@@ -8,7 +8,8 @@ scene.background = new THREE.Color(0x87CEEB); // Sky blue
 
 // Camera setup
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.set(0, 10, 30);
+//camera.position.set(0, 10, 30);
+camera.position.set(25, 35, -20);
 
 // Renderer setup with proper transparency
 const renderer = new THREE.WebGLRenderer({ 
@@ -67,6 +68,7 @@ scene.add(ocean);
 const skyGeometry = new THREE.SphereGeometry(500, 32, 32);
 const skyMaterial = new THREE.MeshBasicMaterial({
   color: 0x87CEEB,
+  //color: 'beige',
   side: THREE.BackSide
 });
 const sky = new THREE.Mesh(skyGeometry, skyMaterial);
@@ -79,7 +81,7 @@ const waterMaterial = new THREE.MeshPhysicalMaterial({
   color: 0x55aaff,
   transmission: 0.97, // Glass-like transparency
   roughness: 0,
-  metalness: 0,
+  metalness: 5,
   ior: 1.33, // Water's index of refraction
   thickness: sphereRadius,
   specularIntensity: 1,
