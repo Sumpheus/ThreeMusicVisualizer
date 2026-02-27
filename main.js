@@ -9,7 +9,7 @@ scene.background = new THREE.Color(0x87CEEB); // Sky blue
 // Camera setup
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 //camera.position.set(0, 10, 30);
-camera.position.set(25, 35, -20);
+camera.position.set(25, 40, -20);
 
 // Renderer setup with proper transparency
 const renderer = new THREE.WebGLRenderer({ 
@@ -64,10 +64,24 @@ const ocean = new Water(waterGeometry, {
 ocean.rotation.x = -Math.PI / 2;
 scene.add(ocean);
 
+// Create a Video element and texture
+
+const video = document.createElement('video');
+video.src = 'skypattern.mp4';
+video.crossOrigin = 'anonymous';
+video.loop = true;
+video.muted = true;
+video.play();
+
+const videoTexture = new THREE.VideoTexture(video);
+
 // Create sky dome
 const skyGeometry = new THREE.SphereGeometry(500, 32, 32);
+//const skyTexture = new THREE.TextureLoader().load('skypattern.jpg'); // Replace with your image path
 const skyMaterial = new THREE.MeshBasicMaterial({
   color: 0x87CEEB,
+  map: videoTexture,
+  //map: skyTexture,
   //color: 'beige',
   side: THREE.BackSide
 });
@@ -219,3 +233,35 @@ window.addEventListener('resize', () => {
 });
 
 animate();
+
+
+const jsmediatags = window.jsmediatags;
+
+document.querySelector("#track").addEventListener("change", (event) => {
+    const file = event.target.files[0];
+
+jsmediatags.read(file, {
+    onSuccess: function(tag) {
+      var tags = tag.tags;
+      console.log(tags);
+
+      var image = tags.picture;
+      if (image) {
+        var base64String = "";
+        for (var i = 0; i < image.data.length; i++) {
+            base64String += String.fromCharCode(image.data[i]);
+        }
+        var base64 = "data:image/jpeg;base64," +
+                window.btoa(base64String);
+        document.querySelector("#cover").setAttribute('src',base64);
+        // document.querySelector("#title").textContent = tag.tags.title;
+        // document.querySelector("#artist").textContent = tag.tags.artist;
+        // document.querySelector("#album").textContent = tag.tags.album;
+        // document.querySelector("#genre").textContent = tag.tags.genre;
+      } else {
+        document.querySelector("#cover").src = "icons/noimage.jpg";
+      }
+
+    }
+        });
+    });
