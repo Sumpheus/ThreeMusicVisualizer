@@ -214,12 +214,33 @@ function animate() {
   
   // Change ocean color based on audio
   // Map audioLevel (0..1) to a color between blue and cyan
-  const oceanColor = new THREE.Color().lerpColors(
+  let oceanColor;
+if (audioLevel < 0.25) {
+  oceanColor = new THREE.Color().lerpColors(
     new THREE.Color(0x1a8cff), // base blue
     new THREE.Color(0x00fff7), // bright cyan
-    Math.min(audioLevel, 1)
+    audioLevel / 0.25
   );
-  ocean.material.uniforms['waterColor'].value.copy(oceanColor);
+} else if (audioLevel < 0.5) {
+  oceanColor = new THREE.Color().lerpColors(
+    new THREE.Color(0x00fff7), // bright cyan
+    new THREE.Color(0x00ff00), // green
+    (audioLevel - 0.25) / 0.25
+  );
+} else if (audioLevel < 0.75) {
+  oceanColor = new THREE.Color().lerpColors(
+    new THREE.Color(0x00ff00), // green
+    new THREE.Color(0x00FFCC00), // yellow-green
+    (audioLevel - 0.5) / 0.25
+  );
+} else {
+  oceanColor = new THREE.Color().lerpColors(
+    new THREE.Color(0x00FFCC00), // yellow-green
+    new THREE.Color(0x00FFCC99), // bright gold
+    (audioLevel - 0.75) / 0.25
+  );
+}
+ocean.material.uniforms['waterColor'].value.copy(oceanColor);
 
   controls.update();
   renderer.render(scene, camera);
